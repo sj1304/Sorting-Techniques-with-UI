@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color:hsl(60, 31%, 89%);
+        }
+        #input_box{
+            margin:30px 60px 70px 90px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            background-color: #c1cf96;
+           width:500px;
+           border-radius: 30px;
+           box-shadow: 5px 5px 5px 5px rgb(188, 187, 187);
+        }
+        
+        #input_container{
+             border-right: 1px solid black;
+             display: flex;
+             flex-direction: column;
+          justify-content: center;   
+             
+        }
+        #outer{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            
+        }
+       
+        select{
+            align-self: center;
+            text-align: center;
+            margin-bottom: 50px;
+            height: 40px;
+            width:300px;
+        }
+
+        input{
+            align-self: center;
+            text-align: center;
+            margin-bottom: 20px;
+            height: 30px;
+            width:550px;
+        }
+
+        p{  
+            text-align: center;
+            font-size: 50px;
+        }
+        
+        #display_input{
+            margin:0px 100px 50px 40px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            background-color: #c1cf96;
+           width:600px;
+           border-radius: 20px;
+           box-shadow: 5px 5px 5px 5px rgb(188, 187, 187);
+        }
+    </style>
+</head>
+<body>
+    <p>Bubble Sort</p>
+<div id="outer">
+<div id="input_container">
+<div id="input_box">
+<h2 style="font-size: 30px;">Select the Type of Input you Want:</h2>
+<select>
+    <option>Select desired input</option>
+    <option>Best Case Input</option>
+    <option>Worst Case Input</option>
+    <option>Average Case Input</option>
+    <option>User Input Array</option>
+</select>
+</div> 
+<div id="display_input">
+    <h2>Input for Sorting:</h2>
+    <input type="text" id="input_display_box" placeholder="Add the array in this way 12,45,63,34,21">
+</div>
+<button style="align-self:center; margin-right:30px; background-color:cornsilk; border-radius:30px; box-shadow: 3px 3px 3px 3px grey; width:120px; height:40px; font-size: 20px;">Sort</button>
+</div>
+<div id="output">
+<h2>Output</h2> 
+</div>
+</div>  
+</body>
+</html>
