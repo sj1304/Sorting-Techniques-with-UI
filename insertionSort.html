@@ -4,23 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="c:\Users\Admin\Desktop\jquery-3.7.1.min.js"></script>
+    <script>
+        function activate_display_input()
+        {
+            var input=document.getElementById("input_select").value;
+            if(input=="User_input")
+        {   
+            document.getElementById("input_display_box").disabled=false;
+            document.getElementById("input_display_box").style.backgroundColor="white";
+            
+        }
+        else
+        {
+            let length=5;
+            let randomArray=[];
+            for(let i=0;i<length;i++)
+         {
+            randomArray.push(Math.floor(Math.random()*100));   
+         }
+            document.getElementById("input_display_box").disabled=true;
+             document.getElementById("input_display_box").style.backgroundColor="gainsboro";
+        
+        if(input=="Best")
+        {
+         randomArray.sort();
+         document.getElementById("input_display_box").value=randomArray;
+        }
+        if(input=="Worst")
+        {
+            randomArray.sort();
+            randomArray.reverse();
+            document.getElementById("input_display_box").value=randomArray;
+        }
+         if(input=="Average")
+        {
+            document.getElementById("input_display_box").value=randomArray;
+        }
+        }
+        }
+    
+        function get_input()
+        {
+            var str=document.getElementById("input_display_box").value;
+            if(str.length!=0)
+        {
+            arr=str.split(",");
+            document.getElementById("swaping").innerHTML=arr;
+        }
+        else{
+            
+            document.getElementById("swaping").innerHTML="<h2>Please Select an Input!</h2>";
+        }
+        }
+
+    
+
+    </script>
     <style>
         body{
-            background-color:hsl(60, 31%, 89%);
+            background-color:black;
+            background-image: linear-gradient(rgba(173, 168, 168, 0.3),rgba(158, 155, 155, 0.3)),url("card_bg.png");
+            
+        }
+        img{
+            opacity:0.5;
         }
         #input_box{
-            margin:30px 60px 70px 90px;
+            margin:0px 30px 40px 40px;
             display: flex;
             flex-direction: column;
             text-align: center;
             justify-content: center;
-            background-color: #c1cf96;
+            background-color: oklab(95.294% -0.00303 0.01006);
            width:500px;
+           height:250px;
            border-radius: 30px;
-           box-shadow: 5px 5px 5px 5px rgb(188, 187, 187);
+           box-shadow: 5px 5px 5px 5px rgb(84, 84, 84);
+           border:2px solid black;
         }
         
         #input_container{
+            
              border-right: 1px solid black;
              display: flex;
              flex-direction: column;
@@ -28,17 +93,19 @@
              
         }
         #outer{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-wrap: wrap;
             
         }
        
         select{
             align-self: center;
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 20px;
             height: 40px;
             width:300px;
+            border-radius: 20px;
+            font-size: 20px;
         }
 
         input{
@@ -46,7 +113,9 @@
             text-align: center;
             margin-bottom: 20px;
             height: 30px;
-            width:550px;
+            width:500px;
+            border-radius: 20px;
+            font-size: 20px;
         }
 
         p{  
@@ -55,40 +124,70 @@
         }
         
         #display_input{
-            margin:0px 100px 50px 40px;
+            margin:0px 30px 50px 20px;
             display: flex;
             flex-direction: column;
             text-align: center;
             justify-content: center;
             background-color: #c1cf96;
-           width:600px;
+           width:550px;
            border-radius: 20px;
-           box-shadow: 5px 5px 5px 5px rgb(188, 187, 187);
+           box-shadow: 5px 5px 5px 5px rgb(65, 64, 64);
+background-color: oklab(95.294% -0.00303 0.01006);
+           border:2px solid black;
+        }
+
+        #output{
+           margin:0px 5px 70px 20px;
+           display: flex;
+           flex-direction: column;
+           text-align: center;
+           justify-content: center;
+           background-color: #c1cf96;
+           width:860px;
+           border-radius: 30px;
+           box-shadow: 5px 5px 5px 5px rgb(61, 61, 61);
+background-color: oklab(95.294% -0.00303 0.01006);
+           border:2px solid black;
+        }
+        
+        button{
+            background-color:rgb(212, 246, 246);
+        }
+        button:hover{
+            background-color: hsl(191, 66%, 78%);
+            border:3px solid black;
+            cursor:pointer;
         }
     </style>
 </head>
 <body>
-    <p>Bubble Sort</p>
+    <b><p>Insertion Sort</p></b>
 <div id="outer">
 <div id="input_container">
 <div id="input_box">
-<h2 style="font-size: 30px;">Select the Type of Input you Want:</h2>
-<select>
-    <option>Select desired input</option>
-    <option>Best Case Input</option>
-    <option>Worst Case Input</option>
-    <option>Average Case Input</option>
-    <option>User Input Array</option>
+<h1 style="font-size: 30px;">Select the Type of Input you Want:</h1>
+<select id="input_select" onchange="activate_display_input()">
+    <option value="not_selected">Select desired input</option>
+    <option value="Best">Best Case Input</option>
+    <option value="Worst">Worst Case Input</option>
+    <option value="Average">Average Case Input</option>
+    <option value="User_input">User Input Array</option>
 </select>
 </div> 
 <div id="display_input">
-    <h2>Input for Sorting:</h2>
-    <input type="text" id="input_display_box" placeholder="Add the array in this way 12,45,63,34,21">
+    <h1>Input for Sorting:</h1>
+    <input type="text" id="input_display_box"  style="background-color: gainsboro;"  placeholder="Add the array in this way 12,45,63,34,21" disabled>
 </div>
-<button style="align-self:center; margin-right:30px; background-color:cornsilk; border-radius:30px; box-shadow: 3px 3px 3px 3px grey; width:120px; height:40px; font-size: 20px;">Sort</button>
+<button onclick="get_input()" id="sorting" style="align-self:center; margin-right:30px; border-radius:30px; box-shadow: 3px 3px 3px 3px grey; width:140px; height:50px; font-size: 27px;"><b>Sort</b></button>
 </div>
+
+
 <div id="output">
-<h2>Output</h2> 
+<h1 style="font-size: 50px;">Output</h1> 
+<div id="swaping">
+<h2>Please Select an Input!</h2>
+</div>
 </div>
 </div>  
 </body>
