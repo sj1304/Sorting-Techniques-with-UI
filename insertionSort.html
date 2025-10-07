@@ -7,13 +7,23 @@
     <script src="c:\Users\Admin\Desktop\jquery-3.7.1.min.js"></script>
     <script>
         function activate_display_input()
-        {
+        {  
+        //activate button after change in select
+        document.getElementById("sorting").disabled=false;
+        stepCounter=0;
+        
             var input=document.getElementById("input_select").value;
             if(input=="User_input")
-        {   
+        {   document.getElementById("input_display_box").value="";
             document.getElementById("input_display_box").disabled=false;
             document.getElementById("input_display_box").style.backgroundColor="white";
             
+        }
+        else if(input=="not_selected")
+        {
+            document.getElementById("input_display_box").value="";
+            document.getElementById("swaping").innerHTML="<h2>Please Select an Input!</h2>";
+       
         }
         else
         {
@@ -44,13 +54,77 @@
         }
         }
     
+
+// Step counter
+let stepCounter = 0;
+
+function displayStepRow(arr) {
+  const gridContainer = document.getElementById("swaping");
+
+  const row = document.createElement("div");
+  row.className = "row";
+  row.style.gridTemplateColumns = `repeat(${arr.length + 1}, 1fr)`; // +1 for "Step N"
+
+  // Add "Step N" cell
+  const stepLabel = document.createElement("div");
+  stepLabel.className = "step-label";
+  stepLabel.textContent = `Step ${++stepCounter}`;
+  row.appendChild(stepLabel);
+  
+  
+
+  // Add each element as a "card"
+  for (let i = 0; i < arr.length; i++) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = arr[i];
+    row.appendChild(card);
+  }
+
+  gridContainer.appendChild(row);
+
+
+}
+
+
+function insertionSort(arr) {
+
+const output = document.getElementById('swaping');
+output.scrollTop = 0;
+    const gridContainer = document.getElementById("swaping");
+  gridContainer.innerHTML = ""; // Clear previous content
+
+  // Initial array state
+  displayStepRow(arr);
+
+
+  for (let i = 1; i < arr.length; i++) {
+    let key = arr[i];
+    let j = i - 1;
+
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      j = j - 1;
+    }
+
+    arr[j + 1] = key;
+
+    
+    displayStepRow(arr);
+    document.getElementById("sorting").disabled=true;
+    
+  }
+}
+
+       
         function get_input()
         {
             var str=document.getElementById("input_display_box").value;
             if(str.length!=0)
         {
             arr=str.split(",");
-            document.getElementById("swaping").innerHTML=arr;
+          //  document.getElementById("swaping").innerHTML=arr;
+            insertionSort(arr);
         }
         else{
             
@@ -67,11 +141,51 @@
             background-image: linear-gradient(rgba(173, 168, 168, 0.3),rgba(158, 155, 155, 0.3)),url("card_bg.png");
             
         }
+
+        #swaping {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1px;
+    overflow-y: auto;
+  }
+
+  .row {
+    display: grid;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .step-label {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 5px;
+    color: white;
+    background-color: #333;
+    border-radius: 5px;
+  }
+
+  .card {
+    width: 70px;
+    height: 90px;
+    background-image: url('cards.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    border:3px solid black;
+    margin-bottom: 2px;
+  }
+
         img{
             opacity:0.5;
         }
         #input_box{
-            margin:0px 30px 40px 40px;
+            margin:0 30px 30px 40px;
             display: flex;
             flex-direction: column;
             text-align: center;
@@ -80,7 +194,7 @@
            width:500px;
            height:250px;
            border-radius: 30px;
-           box-shadow: 5px 5px 5px 5px rgb(84, 84, 84);
+           box-shadow: 1px 5px 5px 5px rgb(84, 84, 84);
            border:2px solid black;
         }
         
@@ -121,10 +235,12 @@
         p{  
             text-align: center;
             font-size: 50px;
+            margin-block-end: 15px;
+            margin-block-start: 20px;
         }
         
         #display_input{
-            margin:0px 30px 50px 20px;
+            margin:0px 30px 40px 20px;
             display: flex;
             flex-direction: column;
             text-align: center;
@@ -135,6 +251,7 @@
            box-shadow: 5px 5px 5px 5px rgb(65, 64, 64);
 background-color: oklab(95.294% -0.00303 0.01006);
            border:2px solid black;
+          
         }
 
         #output{
@@ -149,6 +266,9 @@ background-color: oklab(95.294% -0.00303 0.01006);
            box-shadow: 5px 5px 5px 5px rgb(61, 61, 61);
 background-color: oklab(95.294% -0.00303 0.01006);
            border:2px solid black;
+           height:630px;
+           
+           
         }
         
         button{
@@ -159,6 +279,8 @@ background-color: oklab(95.294% -0.00303 0.01006);
             border:3px solid black;
             cursor:pointer;
         }
+
+        
     </style>
 </head>
 <body>
@@ -184,7 +306,7 @@ background-color: oklab(95.294% -0.00303 0.01006);
 
 
 <div id="output">
-<h1 style="font-size: 50px;">Output</h1> 
+<h1 style="font-size: 40px; margin-block-start: 3px;">Output</h1> 
 <div id="swaping">
 <h2>Please Select an Input!</h2>
 </div>
