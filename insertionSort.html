@@ -4,166 +4,365 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="c:\Users\Admin\Desktop\jquery-3.7.1.min.js"></script>
+    <script src="C:\Users\Admin\Desktop\jquery-3.7.1.min.js"></script>
     <script>
-        function activate_display_input()
-        {  
-        //activate button after change in select
-        document.getElementById("sorting").disabled=false;
-        stepCounter=0;
+var count=1;
+var arr = []; 
+var divDisplay = 1;
+var ttime=0;
+var shift=0;
+$(document).ready(function() {
+//  var count = 1;
+    $("#next").click(function(){
+      if (count < arr.length) {
+      count += 1; 
+    if(count==arr.length)
+    {
+      document.getElementById("next").disabled=true;
+    }  
+    }
+      document.getElementById("prev").disabled=false;
+$("." + count).css("display", "grid");
+      for (let i = 1; i <= arr.length + 1; i++) {
+        if (i != count) $("." + i).css("display", "none");
+      }
+      
+      $("#prev").css("visibility","visible");
+    
+      
+      
+      //$("#next").css("visibility","hidden");
+    
+      //  animateStepByStep(count);
+    });
+    $("#prev").click(function() {
+    
+      if (count > 1){ 
+      count -= 1;
+      if(count==1)
+    {
+      document.getElementById("prev").disabled=true;
+    }  
+      }
+      document.getElementById("next").disabled=false;
+      for (let i = 1; i <= arr.length + 1; i++) {
+        if (i != count) $("." + i).css("display", "none");
+      }
+      $("." + count).css("display", "grid");
+    });
+  });
+
+function activate_display_input()
+  {  
+   document.getElementById("sorting").disabled=false;
+      stepCounter=0;
         
-            var input=document.getElementById("input_select").value;
-            if(input=="User_input")
-        {   document.getElementById("input_display_box").value="";
+  var input=document.getElementById("input_select").value;
+  if(input=="User_input")
+   {   document.getElementById("input_display_box").value="";
             document.getElementById("input_display_box").disabled=false;
             document.getElementById("input_display_box").style.backgroundColor="white";
             
-        }
-        else if(input=="not_selected")
-        {
-            document.getElementById("input_display_box").value="";
-            document.getElementById("swaping").innerHTML="<h2>Please Select an Input!</h2>";
-       
-        }
-        else
-        {
-            let length=5;
-            let randomArray=[];
-            for(let i=0;i<length;i++)
-         {
-            randomArray.push(Math.floor(Math.random()*100));   
-         }
-            document.getElementById("input_display_box").disabled=true;
-             document.getElementById("input_display_box").style.backgroundColor="gainsboro";
+  }
+   else if(input=="not_selected")
+  {
+   document.getElementById("input_display_box").value="";
+      document.getElementById("swaping").innerHTML="<h2>Please Select an Input!</h2>";
+      document.getElementById("time_complex").style.display="none";
+            document.getElementById("next").style.visibility="hidden";
+            document.getElementById("prev").style.visibility="hidden";       
+  }
+  else
+  {
+  let length=5;
+let randomArray=[];
+for(let i=0;i<length;i++)
+{
+ randomArray.push(Math.floor(Math.random()*100));   
+}
+document.getElementById("input_display_box").disabled=true;
+document.getElementById("input_display_box").style.backgroundColor="gainsboro";
         
-        if(input=="Best")
-        {
+if(input=="Best")
+     {
          randomArray.sort();
          document.getElementById("input_display_box").value=randomArray;
-        }
-        if(input=="Worst")
-        {
-            randomArray.sort();
-            randomArray.reverse();
-            document.getElementById("input_display_box").value=randomArray;
-        }
-         if(input=="Average")
-        {
-            document.getElementById("input_display_box").value=randomArray;
-        }
-        }
-        }
+    }
+  if(input=="Worst")
+  {
+      randomArray.sort();
+    randomArray.reverse();
+      document.getElementById("input_display_box").value=randomArray;
+  }
+  if(input=="Average")
+  {
+  document.getElementById("input_display_box").value=randomArray;
+  }
+  }
+ }
     
 
-// Step counter
-let stepCounter = 0;
+var stepCounter = 0;
+var once=0;
+function displayStepRow(arr, keyElement) {
+  stepCounter += 1;
 
-function displayStepRow(arr) {
-  const gridContainer = document.getElementById("swaping");
+  var CardsContainer = document.getElementById("swaping");
+  var row = document.createElement("div");
+ row.className = "row oprow " + divDisplay;
+  row.style.gridTemplateColumns = `repeat(${arr.length + 1}, 1fr)`; 
 
-  const row = document.createElement("div");
-  row.className = "row";
-  row.style.gridTemplateColumns = `repeat(${arr.length + 1}, 1fr)`; // +1 for "Step N"
-
-  // Add "Step N" cell
-  const stepLabel = document.createElement("div");
+var stepLabel = document.createElement("div");
   stepLabel.className = "step-label";
-  stepLabel.textContent = `Step ${++stepCounter}`;
-  row.appendChild(stepLabel);
-  
-  
 
-  // Add each element as a "card"
+  if (once < 1) {
+  stepLabel.innerHTML = `Step ${stepCounter}`;
+once++;
+    }
+  else {
+        stepLabel.innerHTML = `Key Insertion<br>Step ${stepCounter}`;
+    }
+
+    row.appendChild(stepLabel);
   for (let i = 0; i < arr.length; i++) {
-    const card = document.createElement("div");
+        var card = document.createElement("div");
+        card.className = "card";
+
+  if (i === keyElement) {
+            card.className = "card keyElement"; 
+        }
+
+        card.innerHTML = arr[i];
+        row.appendChild(card);
+    }
+
+    CardsContainer.appendChild(row);
+}
+
+
+function animateDivElements(arr, index1, index2) {
+  var CardsContainer = document.getElementById("swaping");
+  var row = document.createElement("div");
+  row.className = "row oprow " + divDisplay + " shift_" + shift;
+  row.style.gridTemplateColumns = `repeat(${arr.length + 1}, 1fr)`; 
+  
+  var stepLabel = document.createElement("div");
+  stepLabel.className = "step-label";
+  stepLabel.innerHTML = `Shifting<br>Step changes`;
+  row.appendChild(stepLabel);
+
+  for (let i = 0; i < arr.length; i++) {
+    var card = document.createElement("div");
     card.className = "card";
-    card.textContent = arr[i];
+    card.innerHTML = arr[i];
+
+  if (i === index1) {
+      card.className = "blinky2";
+      
+    } 
+  else if (i === index2) {
+      card.className = "blinky1";
+      card.style.visibility = "hidden";
+    }
+
     row.appendChild(card);
   }
 
-  gridContainer.appendChild(row);
-
-
+  CardsContainer.appendChild(row);
 }
+
+
+
 
 
 function insertionSort(arr) {
+  once=0;
+  var gridContainer = document.getElementById("swaping");
+  gridContainer.innerHTML = "";
+  divDisplay = 1; 
 
-const output = document.getElementById('swaping');
-output.scrollTop = 0;
-    const gridContainer = document.getElementById("swaping");
-  gridContainer.innerHTML = ""; // Clear previous content
-
-  // Initial array state
-  displayStepRow(arr);
-
+  displayStepRow(arr,-1);
+ 
+  $("." + divDisplay).css("display", "grid");
+  divDisplay += 1;
 
   for (let i = 1; i < arr.length; i++) {
-    let key = arr[i];
-    let j = i - 1;
-
-    while (j >= 0 && arr[j] > key) {
+    var key = arr[i];
+    var j = i - 1;
+    
+  while (j >= 0 && arr[j] > key) {
+      shift++;
       arr[j + 1] = arr[j];
+      animateDivElements(arr, j, j + 1);
+     
       j = j - 1;
-    }
+      ttime++;
+  }
 
     arr[j + 1] = key;
-
-    
-    displayStepRow(arr);
-    document.getElementById("sorting").disabled=true;
-    
+    displayStepRow(arr,j+1); 
+    //$("." + divDisplay).css("display", "grid");
+    divDisplay += 1;
+    ttime++;
+    shift=0;
   }
+
+       document.getElementById("sorting").disabled = true;
 }
 
+/*function animateStepByStep(arr,count) {
+    //access elements by divDisplay shift_+shift > blinky and animate till shift goes 0 
+let parent = document.getElementsByClassName("oprow")[0];
+let childrenCount = parent.children.length;
+console.log(childrenCount);
+
+
+}
+*/
+
        
-        function get_input()
-        {
+function get_input()
+{   ttime=0;
             var str=document.getElementById("input_display_box").value;
             if(str.length!=0)
-        {
+    {   
             arr=str.split(",");
-          //  document.getElementById("swaping").innerHTML=arr;
+            count=1;
+            divDisplay=1;
             insertionSort(arr);
-        }
+            document.getElementById("time_complex").style.display="block";           
+            document.getElementById("time_complex").innerHTML=`Time Complexity is: ${ttime}`;
+            document.getElementById("next").style.visibility="visible";
+            document.getElementById("next").disabled=false;
+            document.getElementById("prev").style.visibility="hidden";
+            
+    
+          }
         else{
             
             document.getElementById("swaping").innerHTML="<h2>Please Select an Input!</h2>";
+            
         }
         }
-
-    
-
     </script>
     <style>
         body{
             background-color:black;
             background-image: linear-gradient(rgba(173, 168, 168, 0.3),rgba(158, 155, 155, 0.3)),url("card_bg.png");
-            
         }
-
-        #swaping {
+  #swaping {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     margin-top: 1px;
     overflow-y: auto;
   }
-
-  .row {
-    display: grid;
-    gap: 10px;
+ .row {
+    display: none;
+    gap: 0px;
     align-items: center;
   }
-
+ /* div > .oprow{
+    display:none;
+  }*/
   .step-label {
     font-weight: bold;
     text-align: center;
     padding: 10px 5px;
+    margin-right:3px;
     color: white;
     background-color: #333;
     border-radius: 5px;
   }
+/*
+@keyframes swappy1 {
+  0%   { transform: translateX(0); }
+   50%  { transform: translateX(100px); }
+  100% { transform: translateX(0); }
+}
+*/
+/*@keyframes swappy1 {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(150px); z-index: 3; animation-delay: 5s;}
+  100% { transform: translateX(0); }
+}
+
+@keyframes swappy2 {
+  0%   { visibility: hidden; opacity: 0;  animation-delay: 10s;}
+  99%  { visibility: visible; opacity: 1; animation-delay: 10s;}
+  100% { visibility: hidden; opacity: 0; }
+}
+*/
+
+
+
+  @keyframes swappy1 {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(140px); z-index: 3; } 
+  100% { transform: translateX(0); }
+}
+
+@keyframes swappy2 {
+  0%, 49%  { opacity: 0; visibility: hidden; } 
+  50%,97%      { opacity: 1; visibility: visible; } 
+  100%     { opacity: 0; visibility: hidden; }  
+}
+
+
+.keyElement{
+width: 70px;
+  height: 90px;
+  background-image: url('cards.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+  /*border: 4px solid rgb(189, 184, 122);*/
+  margin-bottom: 2px;
+  outline: 3px dashed rgb(144, 80, 80);
+}
+
+.blinky2 {
+  width: 70px;
+  height: 90px;
+  background-image: url('cards.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+  border: 4px solid  rgb(189, 184, 122);
+  margin-bottom: 2px;
+  animation: swappy1 4s ease-in-out infinite;
+  outline: 3px solid black;
+}
+
+.blinky1 {
+  width: 70px;
+  height: 90px;
+  background-image: url('cards.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+  border: 4px solid  rgb(189, 184, 122);
+  margin-bottom: 2px;
+  animation: swappy2 4s ease-in-out infinite;
+outline: 3px solid black;
+}
+
+
 
   .card {
     width: 70px;
@@ -180,7 +379,31 @@ output.scrollTop = 0;
     border:3px solid black;
     margin-bottom: 2px;
   }
-
+  @media (max-width:500px) and (min-width:200px) {
+      #swaping {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+    overflow-y: auto;
+    width:550px;
+  }
+option{
+    font-size:10px;
+}
+  button{
+    margin-bottom:20px;
+  }
+      #input_container{
+        border-bottom: 1px solid black;
+        border-right: 0px;
+        margin-bottom: 20px;
+      }
+      p{
+        padding-left: 70%;
+        padding-right: 0px;
+      }
+}
         img{
             opacity:0.5;
         }
@@ -197,21 +420,17 @@ output.scrollTop = 0;
            box-shadow: 1px 5px 5px 5px rgb(84, 84, 84);
            border:2px solid black;
         }
-        
         #input_container{
-            
              border-right: 1px solid black;
              display: flex;
+             height:650px;
              flex-direction: column;
           justify-content: center;   
-             
         }
         #outer{
             display: flex;
             flex-wrap: wrap;
-            
         }
-       
         select{
             align-self: center;
             text-align: center;
@@ -221,7 +440,6 @@ output.scrollTop = 0;
             border-radius: 20px;
             font-size: 20px;
         }
-
         input{
             align-self: center;
             text-align: center;
@@ -231,14 +449,12 @@ output.scrollTop = 0;
             border-radius: 20px;
             font-size: 20px;
         }
-
         p{  
             text-align: center;
             font-size: 50px;
-            margin-block-end: 15px;
-            margin-block-start: 20px;
+            margin-block-end: 10px;
+            margin-block-start: 5px;
         }
-        
         #display_input{
             margin:0px 30px 40px 20px;
             display: flex;
@@ -251,11 +467,9 @@ output.scrollTop = 0;
            box-shadow: 5px 5px 5px 5px rgb(65, 64, 64);
 background-color: oklab(95.294% -0.00303 0.01006);
            border:2px solid black;
-          
         }
-
         #output{
-           margin:0px 5px 70px 20px;
+           margin:0px 5px 0px 20px;
            display: flex;
            flex-direction: column;
            text-align: center;
@@ -266,13 +480,13 @@ background-color: oklab(95.294% -0.00303 0.01006);
            box-shadow: 5px 5px 5px 5px rgb(61, 61, 61);
 background-color: oklab(95.294% -0.00303 0.01006);
            border:2px solid black;
-           height:630px;
-           
-           
+           height:645px;
         }
-        
+
+      
         button{
             background-color:rgb(212, 246, 246);
+            margin:0 50px 0 20px;      
         }
         button:hover{
             background-color: hsl(191, 66%, 78%);
@@ -280,11 +494,45 @@ background-color: oklab(95.294% -0.00303 0.01006);
             cursor:pointer;
         }
 
-        
+#next,#prev{
+visibility: hidden;
+  font-size: 20px;
+  width: 70px;
+  height: 40px;
+  align-self: baseline;
+  margin:0 5px 0 5px;
+  border-radius: 40%;
+  z-index: 10;
+}
+
+#prev{
+  position:absolute;
+  bottom:30px;
+  left:660px;
+}
+
+#next{
+  position:absolute;
+  bottom:30px;
+  right:70px;
+}
+        #time_complex{
+          display:none;
+          position: sticky;
+          top:0;
+          bottom:0;
+       font-size: 20px;
+       padding-top: 5px;
+       padding-bottom: 5px;
+        align-self: center;
+      height:30px;
+      width:500px;
+      background-color:gainsboro;; 
+      }
     </style>
 </head>
 <body>
-    <b><p>Insertion Sort</p></b>
+    <p><b>Insertion Sort</b></p>
 <div id="outer">
 <div id="input_container">
 <div id="input_box">
@@ -300,17 +548,19 @@ background-color: oklab(95.294% -0.00303 0.01006);
 <div id="display_input">
     <h1>Input for Sorting:</h1>
     <input type="text" id="input_display_box"  style="background-color: gainsboro;"  placeholder="Add the array in this way 12,45,63,34,21" disabled>
-</div>
+</div id="button_sort">
 <button onclick="get_input()" id="sorting" style="align-self:center; margin-right:30px; border-radius:30px; box-shadow: 3px 3px 3px 3px grey; width:140px; height:50px; font-size: 27px;"><b>Sort</b></button>
 </div>
-
-
 <div id="output">
 <h1 style="font-size: 40px; margin-block-start: 3px;">Output</h1> 
 <div id="swaping">
 <h2>Please Select an Input!</h2>
 </div>
+<div><button id="prev"><-</button> <button id="next">-></button></div>
+<div id="time_complex"></div>
+
 </div>
+
 </div>  
 </body>
 </html>
